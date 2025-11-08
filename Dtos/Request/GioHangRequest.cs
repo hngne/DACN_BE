@@ -2,7 +2,7 @@
 {
     public class GioHangRequest
     {
-        public string MaGioHang { get; set; } = null!;
-        public string? MaTaiKhoan { get; set; }
+        public string MaSP { get; set; }
+        public int SoLuong { get; set; }
     }
 }
