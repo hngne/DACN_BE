@@ -21,12 +21,12 @@ namespace DACN_H_P.Repository.Impl
                 .FirstOrDefaultAsync(GH => GH.MaTaiKhoan == matk);
         }
 
-        public async Task AddOrUpdateGioHang(string matk, string masp, int soluong)
+        public async Task<bool> AddOrUpdateGioHang(string matk, string masp, int soluong)
         {
             var tk = await _context.TaiKhoans.FirstOrDefaultAsync(tk => tk.MaTaiKhoan == matk);
             if (tk == null)
             {
-                throw new Exception("Tài khoản không tồn tại");
+                return false;
             }
             var gioHang = await _context.GioHangs.Include(GH => GH.ChiTietGhs)
                 .FirstOrDefaultAsync(GH => GH.MaTaiKhoan == matk);
@@ -55,20 +55,21 @@ namespace DACN_H_P.Repository.Impl
             {
                 item.SoLuong += soluong;
             }
+            return true;
         }
-        public async Task DecreaseItemGioHang(string matk, string masp, int soluong)
+        public async Task<bool> DecreaseItemGioHang(string matk, string masp, int soluong)
         {
             var tk = await _context.TaiKhoans.FirstOrDefaultAsync(tk => tk.MaTaiKhoan == matk);
             if (tk == null)
             {
-                throw new Exception("Tài khoản không tồn tại");
+                return false;
             }
             var gioHang = await _context.GioHangs
                 .Include(GH => GH.ChiTietGhs)
                 .FirstOrDefaultAsync(GH => GH.MaTaiKhoan == matk);
             if (gioHang == null)
             {
-                return;
+                return false;
             }
             var item = gioHang.ChiTietGhs.FirstOrDefault(i => i.MaSp == masp);
             if (item != null)
@@ -77,22 +78,23 @@ namespace DACN_H_P.Repository.Impl
             }
             else
             {
-                return;
+                return false;
             }
+            return true;
         }
-        public async Task UpdateItemGioHang(string matk, string masp, int soluong)
+        public async Task<bool> UpdateItemGioHang(string matk, string masp, int soluong)
         {
             var tk = await _context.TaiKhoans.FirstOrDefaultAsync(tk => tk.MaTaiKhoan == matk);
             if (tk == null)
             {
-                throw new Exception("Tài khoản không tồn tại");
+                return false;
             }
             var gioHang = await _context.GioHangs
                 .Include(GH => GH.ChiTietGhs)
                 .FirstOrDefaultAsync(GH => GH.MaTaiKhoan == matk);
             if (gioHang == null)
             {
-                return;
+                return false;
             }
             var item = gioHang.ChiTietGhs.FirstOrDefault(i => i.MaSp == masp);
             if (item != null)
@@ -101,44 +103,47 @@ namespace DACN_H_P.Repository.Impl
             }
             else
             {
-                return;
+                return false;
             }
+            return true;
         }
-        public async Task RemoveItemAsync(string matk, string masp)
+        public async Task<bool> RemoveItemAsync(string matk, string masp)
         {
             var tk = await _context.TaiKhoans.FirstOrDefaultAsync(tk => tk.MaTaiKhoan == matk);
             if (tk == null)
             {
-                throw new Exception("Tài khoản không tồn tại");
+                return false;
             }
             var gioHang = await _context.GioHangs
                 .Include(GH => GH.ChiTietGhs)
                 .FirstOrDefaultAsync(GH => GH.MaTaiKhoan == matk);
             if (gioHang == null)
             {
-                return;
+                return false;
             }
             var item = gioHang.ChiTietGhs.FirstOrDefault(i => i.MaSp == masp);
             if (item != null)
             {
                 gioHang.ChiTietGhs.Remove(item);
             }
+            return true;
         }
 
-        public async Task RemoveAllGioHang(string matk)
+        public async Task<bool> RemoveAllGioHang(string matk)
         {
             var tk = await _context.TaiKhoans.FirstOrDefaultAsync(tk => tk.MaTaiKhoan == matk);
             if (tk == null)
             {
-                throw new Exception("Tài khoản không tồn tại");
+                return false;
             }
             var gioHang = await _context.GioHangs
                 .Include(GH => GH.ChiTietGhs)
                 .FirstOrDefaultAsync(GH => GH.MaTaiKhoan == matk);
             if (gioHang != null)
             {
-                _context.GioHangs.Remove(gioHang);
+                _context.ChiTietGhs.RemoveRange(gioHang.ChiTietGhs);
             }
+            return true;
         }
         public async Task SavechangeAsync()
         {

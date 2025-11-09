@@ -6,11 +6,11 @@ namespace DACN_H_P.Repository
     public interface IGioHangRepository
     {
         Task<GioHang?> GetGioHangByMaTaiKhoanAsync(string matk);
-        Task AddOrUpdateGioHang(string matk, string masp, int soluong);
-        Task DecreaseItemGioHang(string matk, string masp, int soluong);
-        Task UpdateItemGioHang(string matk, string masp, int soluong);
-        Task RemoveItemAsync(string matk, string masp);
-        Task RemoveAllGioHang(string matk);
+        Task<bool> AddOrUpdateGioHang(string matk, string masp, int soluong);
+        Task<bool> DecreaseItemGioHang(string matk, string masp, int soluong);
+        Task<bool> UpdateItemGioHang(string matk, string masp, int soluong);
+        Task<bool> RemoveItemAsync(string matk, string masp);
+        Task<bool> RemoveAllGioHang(string matk);
         Task SavechangeAsync();
     }
 }
