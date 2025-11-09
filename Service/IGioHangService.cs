@@ -11,6 +11,5 @@ namespace DACN_H_P.Service
         Task<(bool success, string message, GioHangResponse response)> UpdateItemGioHang(string matk, ChiTietGioHangRequest request);
         Task<(bool success, string message, GioHangResponse response)> RemoveItemAsync(string matk, string masp);
         Task<(bool success, string message, GioHangResponse response)> RemoveAllGioHang(string matk);
-        Task SavechangeAsync();
     }
 }
