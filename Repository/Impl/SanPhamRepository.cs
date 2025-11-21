@@ -24,24 +24,24 @@ namespace DACN_H_P.Repository.Impl
         }
         public async Task<IEnumerable<SanPham>> GetAllAsync()
         {
-            return await _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps).ToListAsync();
+            return await _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps).Include(p => p.ChiTietKms).ThenInclude(p => p.MaKhuyenMaiNavigation).ToListAsync();
         }
         public async Task<SanPham?> GetByMaSP(string masp)
         {
-            var exist = await _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps)
+            var exist = await _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps).Include(p => p.ChiTietKms).ThenInclude(p => p.MaKhuyenMaiNavigation)
                 .FirstOrDefaultAsync(p => p.MaSp == masp);
             return exist;
         }
         public async Task<IEnumerable<SanPham?>> GetByTenSP(string tensp)
         {
-            var exist = _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps)
-                .Where(p => p.TenSp.ToLower().Contains(tensp));
+            var exist = _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps).Include(p => p.ChiTietKms).ThenInclude(p => p.MaKhuyenMaiNavigation)
+                .Where(p => p.TenSp.ToLower().Contains(tensp.ToLower()));
             if(!await exist.AnyAsync())
             {
                 return null;
             }
             var data = await exist.ToListAsync();
-            return exist;
+            return data;
         }
         public async Task<IEnumerable<SanPham?>> GetByMaDM(string madm)
         {
@@ -50,7 +50,7 @@ namespace DACN_H_P.Repository.Impl
             {
                 return null;
             }
-            var exist = await _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps)
+            var exist = await _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps).Include(p => p.ChiTietKms).ThenInclude(p => p.MaKhuyenMaiNavigation)
                 .Where(p => p.MaDanhMuc == madm).ToListAsync();
             return exist;
         }
@@ -75,7 +75,7 @@ namespace DACN_H_P.Repository.Impl
 
         public async Task<SanPham?> GetFullInfoByMaSP(string masp)
         {
-            var exist = await _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps)
+            var exist = await _context.SanPhams.Include(p => p.MaDanhMucNavigation).Include(p => p.AnhSps).Include(p => p.ChiTietKms).ThenInclude(p => p.MaKhuyenMaiNavigation)
                 .FirstOrDefaultAsync(p => p.MaSp == masp);
             return exist;
         }

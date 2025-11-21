@@ -25,19 +25,15 @@ namespace DACN_H_P.Repository.Impl
         }
         public async Task<DonHang?> GetDonHangByMaDH(string maDH)
         {
-            return await _context.DonHangs.Include(c => c.ChiTietDhs).ThenInclude(m => m.MaSpNavigation).FirstOrDefaultAsync(d => d.MaDonHang == maDH);
+            return await _context.DonHangs.Include(c => c.ChiTietDhs).ThenInclude(m => m.MaSpNavigation).Include(v => v.MaVoucherNavigation).Include(ptvc => ptvc.MaPtvcNavigation).Include(pttt => pttt.MaPtttNavigation).FirstOrDefaultAsync(d => d.MaDonHang == maDH);
         }
         public async Task<List<DonHang>> GetDonHangByMaTK(string matk)
         {
-            return await _context.DonHangs.Include(c => c.ChiTietDhs).ThenInclude(m => m.MaSpNavigation).Where(tk => tk.MaTaiKhoan == matk).ToListAsync();
+            return await _context.DonHangs.Include(c => c.ChiTietDhs).ThenInclude(m => m.MaSpNavigation).Include(v => v.MaVoucherNavigation).Include(ptvc => ptvc.MaPtvcNavigation).Include(pttt => pttt.MaPtttNavigation).Where(tk => tk.MaTaiKhoan == matk).ToListAsync();
         }
         public async Task<List<ChiTietDh>> GetChiTietDonHangByMaDH(string maDH)
         {
-            return await _context.ChiTietDhs.Where(ct => ct.MaDonHang == maDH).ToListAsync();
-        }
-        public async Task SavechangeAsync()
-        {
-            await _context.SaveChangesAsync();
+            return await _context.ChiTietDhs.Include(sp => sp.MaSpNavigation).Where(ct => ct.MaDonHang == maDH).ToListAsync();
         }
         public async Task<bool> CheckAcc(string matk)
         {
@@ -77,7 +73,10 @@ namespace DACN_H_P.Repository.Impl
         }
         public async Task<bool> CheckVoucher(string mavoucher)
         {
-            var result = await _context.Vouchers.FirstOrDefaultAsync(v => v.MaVoucher == mavoucher);
+            var result = await _context.Vouchers.FirstOrDefaultAsync(v => v.MaVoucher == mavoucher
+                                                                     && v.NgayBatDau <= DateTime.Now
+                                                                     && v.NgayKetThuc >= DateTime.Now
+            );
             if (result == null)
             {
                 return false;

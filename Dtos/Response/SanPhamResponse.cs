@@ -4,10 +4,10 @@
     {
         public string MaSp { get; set; } = null!;
         public string TenSp { get; set; } = null!;
-
         public string? TenDanhMuc { get; set; }
 
         public decimal Gia { get; set; }
+        public decimal GiaKhuyenMai { get; set; }   
 
         public string? MoTa { get; set; }
 
@@ -16,7 +16,10 @@
         public decimal? TheTich { get; set; }
 
         public string? DonVi { get; set; }
+        public string? AnhDaiDien { get; set; }
+        public string? AnhPhu1 { get; set; }
+        public string? AnhPhu2 { get; set; }
 
-        public List<string> DuongDanAnhSPs { get; set; } = new List<string>();  
+        public List<string> DuongDanAnhSPs { get; set; } = new List<string>();
     }
 }

@@ -101,6 +101,15 @@ namespace DACN_H_P.Service.Impl
             {
                 return (false, $"Không tìm thấy sản phẩm có mã {request.MaSp}", null);
             }
+
+            exist.TenSp = request.TenSp;
+            exist.MaDanhMuc = request.MaDanhMuc;
+            exist.Gia = request.Gia;
+            exist.MoTa = request.MoTa;
+            exist.SoLuongTon = request.SoLuongTon;
+            exist.TheTich = request.TheTich;
+            exist.DonVi = request.DonVi;
+
             var imgUrl = new List<string>();
             if (request.AnhSps != null && request.AnhSps.Count > 0)
             {
