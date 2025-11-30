@@ -1,4 +1,5 @@
 ﻿using DACN_H_P.Dtos.Response;
+using DACN_H_P.Helper;
 using DACN_H_P.Model;
 
 namespace DACN_H_P.Mapper
@@ -7,15 +8,14 @@ namespace DACN_H_P.Mapper
     {
         public static SanPhamResponse ToResponse(SanPham sp)
         {
-            var km = sp.ChiTietKms.FirstOrDefault(ct => ct.MaKhuyenMaiNavigation.NgayBatDau <= DateTime.Now && ct.MaKhuyenMaiNavigation.NgayKetThuc >= DateTime.Now);
-            var giaKhuyenMai = km != null ? sp.Gia - (sp.Gia * km.PhanTramGiam / 100) : sp.Gia;
+            var giakhuyenmai = KhuyenMaiHelper.TinhGiaKhuyenMai(sp);
             return new SanPhamResponse
             {
                 MaSp = sp.MaSp,
                 TenSp = sp.TenSp,
                 TenDanhMuc = sp.MaDanhMucNavigation?.TenDanhMuc ?? "N/a",
                 Gia = sp.Gia,
-                GiaKhuyenMai = giaKhuyenMai,
+                GiaKhuyenMai = giakhuyenmai,
                 MoTa = sp.MoTa,
                 SoLuongTon = sp.SoLuongTon,
                 TheTich = sp.TheTich,

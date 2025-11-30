@@ -43,6 +43,9 @@ namespace DACN_H_P
             builder.Services.AddScoped<IGioHangRepository, GioHangRepository>();
             builder.Services.AddScoped<IGioHangService, GioHangService>();
 
+            builder.Services.AddScoped<IKhuyenMaiRepository, KhuyenMaiRepository>();
+            builder.Services.AddScoped<IKhuyenMaiService, KhuyenMaiService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

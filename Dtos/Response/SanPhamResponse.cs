@@ -7,7 +7,7 @@
         public string? TenDanhMuc { get; set; }
 
         public decimal Gia { get; set; }
-        public decimal GiaKhuyenMai { get; set; }   
+        public decimal GiaKhuyenMai { get; set; }
 
         public string? MoTa { get; set; }
 

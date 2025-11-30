@@ -18,6 +18,10 @@ namespace DACN_H_P.Repository.Impl
                 .Include(GH => GH.ChiTietGhs)
                 .ThenInclude(GH => GH.MaSpNavigation)
                 .ThenInclude(sp => sp.AnhSps)
+                .Include(GH => GH.ChiTietGhs)
+                .ThenInclude(sp => sp.MaSpNavigation)
+                .ThenInclude(ctkm => ctkm.ChiTietKms)
+                .ThenInclude(km => km.MaKhuyenMaiNavigation)
                 .FirstOrDefaultAsync(GH => GH.MaTaiKhoan == matk);
         }
 

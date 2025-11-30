@@ -1,4 +1,5 @@
 ﻿using DACN_H_P.Dtos.Response;
+using DACN_H_P.Helper;
 using DACN_H_P.Model;
 
 namespace DACN_H_P.Mapper
@@ -7,13 +8,15 @@ namespace DACN_H_P.Mapper
     {
         public static ChiTietGHResponse ToResponse(ChiTietGh ct, SanPham sp)
         {
+            decimal giadat = KhuyenMaiHelper.TinhGiaKhuyenMai(sp);
             return new ChiTietGHResponse
             {
                 MaSp = sp.MaSp,
                 TenSp = sp.TenSp,
                 Anh = sp.AnhSps.FirstOrDefault()?.DuongDan,
                 SoLuong = ct.SoLuong,
-                DonGia = sp.Gia
+                GiaBanDau = sp.Gia,
+                GiaDatHang = giadat
             };
         }
     }

@@ -6,7 +6,9 @@
         public string TenSp { get; set; } = null!;
         public string? Anh { get; set; }
         public int SoLuong { get; set; }
-        public decimal DonGia { get; set; }
-        public decimal ThanhTien => SoLuong * DonGia;    
+
+        public decimal GiaBanDau { get; set; }
+        public decimal GiaDatHang{ get; set; }
+        public decimal ThanhTien => SoLuong * GiaDatHang;    
     }
 }
