@@ -73,6 +73,10 @@ namespace DACN_H_P.Controllers
         public async Task<IActionResult> getchitietbymakm(string makm)
         {
             var data = await _service.GetChiTietKMByMaKM(makm);
+            if (data == null)
+            {
+                return NotFound(APIResponse<ChiTietKhuyenMaiResponse>.Fail("Không tồn tại mã khuyến mãi này"));
+            }
             return Ok(APIResponse<IEnumerable<ChiTietKhuyenMaiResponse>>.OK("Danh sách chi tiết theo khuyến mãi", data));
         }
         [HttpGet]
@@ -80,6 +84,10 @@ namespace DACN_H_P.Controllers
         public async Task<IActionResult> getchitietbymasp(string masp)
         {
             var data = await _service.GetChiTietKMByMaSP(masp);
+            if(data == null)
+            {
+                return NotFound(APIResponse<ChiTietKhuyenMaiResponse>.Fail("Không tồn tại mã sản phẩm này"));
+            }
             return Ok(APIResponse<IEnumerable<ChiTietKhuyenMaiResponse>>.OK("Danh sách chi tiết theo sản phẩm", data));
         }
         [HttpPost]

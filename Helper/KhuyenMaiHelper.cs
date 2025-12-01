@@ -1,4 +1,5 @@
 ﻿using DACN_H_P.Model;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace DACN_H_P.Helper
 {
@@ -6,17 +7,26 @@ namespace DACN_H_P.Helper
     {
         public static decimal TinhGiaKhuyenMai(SanPham sp)
         {
-            decimal giakm;
-            var km = sp.ChiTietKms.FirstOrDefault(ct => ct.MaKhuyenMaiNavigation.NgayBatDau <= DateTime.Now && ct.MaKhuyenMaiNavigation.NgayKetThuc >= DateTime.Now);
-            if (km == null)
+            if(sp.ChiTietKms == null || !sp.ChiTietKms.Any())
             {
-                giakm = sp.Gia;
+                return sp.Gia;
+            }
+            var now = DateTime.Now;
+            var kmTotNhat = sp.ChiTietKms.Where(ctkm => ctkm.MaKhuyenMaiNavigation != null
+                                            && ctkm.MaKhuyenMaiNavigation.NgayBatDau <= now
+                                            && ctkm.MaKhuyenMaiNavigation.NgayKetThuc >= now)
+                                            .OrderByDescending(ct => ct.PhanTramGiam)
+                                            .FirstOrDefault();
+            if(kmTotNhat == null)
+            {
+                return sp.Gia;
             }
             else
             {
-                giakm = sp.Gia - (sp.Gia * km.PhanTramGiam / 100);
+                decimal giakm;
+                giakm = sp.Gia - (sp.Gia * kmTotNhat.PhanTramGiam / 100);
+                return giakm;
             }
-            return giakm;
         } 
     }
 }

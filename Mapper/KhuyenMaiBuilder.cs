@@ -7,6 +7,19 @@ namespace DACN_H_P.Mapper
     {
         public static KhuyenMaiResponse ToResponse(KhuyenMai km)
         {
+            string statusKM = string.Empty;
+            if (km.NgayBatDau > DateTime.Now)
+            {
+                statusKM = "Chưa bắt đầu";
+            }
+            else if(km.NgayBatDau <= DateTime.Now && km.NgayKetThuc >= DateTime.Now)
+            {
+                statusKM = "Còn hiệu lực";
+            }
+            else
+            {
+                statusKM = "Hết hạn";
+            }
             return new KhuyenMaiResponse
             {
                 MaKhuyenMai = km.MaKhuyenMai,
@@ -14,7 +27,7 @@ namespace DACN_H_P.Mapper
                 NgayBatDau = km.NgayBatDau,
                 NgayKetThuc = km.NgayKetThuc,
                 MoTa = km.MoTa,
-                TrangThai = km.NgayKetThuc < DateTime.Now ? "Hết hạn" : "Còn hiệu lực"
+                TrangThai = statusKM
             };
         }
     }

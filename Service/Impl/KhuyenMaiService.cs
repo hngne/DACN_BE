@@ -80,13 +80,23 @@ namespace DACN_H_P.Service.Impl
             }
             return (true, "Xóa thành công");
         }
-        public async Task<IEnumerable<ChiTietKhuyenMaiResponse>> GetChiTietKMByMaKM(string makm)
+        public async Task<IEnumerable<ChiTietKhuyenMaiResponse>?> GetChiTietKMByMaKM(string makm)
         {
+            var exist = await _repo.CheckKmExist(makm);
+            if(!exist)
+            {
+                return null;
+            }
             var result = await _repo.GetChiTietKmByMaKM(makm);
             return result.Select(ChiTietKhuyenMaiBuilder.ToResponse).ToList();
         }
-        public async Task<IEnumerable<ChiTietKhuyenMaiResponse>> GetChiTietKMByMaSP(string masp)
+        public async Task<IEnumerable<ChiTietKhuyenMaiResponse>?> GetChiTietKMByMaSP(string masp)
         {
+            var exist = await _repo.CheckSpExist(masp);
+            if (!exist)
+            {
+                return null;
+            }
             var result = await _repo.GetChiTietKmByMaSP(masp);
             return result.Select(ChiTietKhuyenMaiBuilder.ToResponse).ToList();
         }

@@ -71,11 +71,11 @@ namespace DACN_H_P.Repository.Impl
         }
         public async Task<IEnumerable<ChiTietKm>> GetChiTietKmByMaKM(string maKM)
         {
-            return await _context.ChiTietKms.AsNoTracking().Where(ctkm => ctkm.MaKhuyenMai == maKM).ToListAsync();
+            return await _context.ChiTietKms.Include(sp =>sp.MaSpNavigation).AsNoTracking().Where(ctkm => ctkm.MaKhuyenMai == maKM).ToListAsync();
         }
         public async Task<IEnumerable<ChiTietKm>> GetChiTietKmByMaSP(string maSP)
         {
-            var result = await _context.ChiTietKms.AsNoTracking().Where(sp => sp.MaSp == maSP).ToListAsync();
+            var result = await _context.ChiTietKms.Include(sp => sp.MaSpNavigation).AsNoTracking().Where(sp => sp.MaSp == maSP).ToListAsync();
             return result;
         }
         public async Task<bool> PostChiTietKm(ChiTietKm ctkm)
