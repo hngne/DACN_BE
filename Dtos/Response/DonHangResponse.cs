@@ -9,6 +9,10 @@
         public string DiaChiGiaoHang { get; set; } = null!;
         public string PhuongThucThanhToan { get; set; } = null!;
         public string PhuongThucVanChuyen { get; set; } = null!;
+        public decimal? PhiShip { get; set; }
+        public decimal? GiamGiaVoucher { get; set; }
+        public DateTime NgayGiaoHang { get; set; }
+        public decimal ThanhToan { get; set; }
         public List<ChiTietDonHangResponse> ChiTietDonHang { get; set; } = new();
     }
 }

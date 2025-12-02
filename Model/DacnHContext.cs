@@ -47,7 +47,7 @@ public partial class DacnHContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=REDAMANCY;Initial Catalog=DACN_H;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Data Source=REDAMANCY;Initial Catalog=DACN_H;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -454,14 +454,18 @@ public partial class DacnHContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("maVoucher");
-            entity.Property(e => e.DieuKienApDung).HasColumnName("dieuKienApDung");
+            entity.Property(e => e.DieuKienApDung)
+                .HasColumnType("decimal(18, 0)")
+                .HasColumnName("dieuKienApDung");
+            entity.Property(e => e.GiamGia)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("giamGia");
             entity.Property(e => e.NgayBatDau)
                 .HasColumnType("datetime")
                 .HasColumnName("ngayBatDau");
             entity.Property(e => e.NgayKetThuc)
                 .HasColumnType("datetime")
                 .HasColumnName("ngayKetThuc");
-            entity.Property(e => e.PhanTramGiam).HasColumnName("phanTramGiam");
             entity.Property(e => e.TenVoucher)
                 .HasMaxLength(100)
                 .HasColumnName("tenVoucher");

@@ -46,6 +46,9 @@ namespace DACN_H_P
             builder.Services.AddScoped<IKhuyenMaiRepository, KhuyenMaiRepository>();
             builder.Services.AddScoped<IKhuyenMaiService, KhuyenMaiService>();
 
+            builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
+            builder.Services.AddScoped<IVoucherService, VoucherService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

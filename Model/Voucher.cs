@@ -9,13 +9,15 @@ public partial class Voucher
 
     public string? TenVoucher { get; set; }
 
-    public int? PhanTramGiam { get; set; }
+    public decimal GiamGia { get; set; }
 
     public DateTime NgayBatDau { get; set; }
 
     public DateTime NgayKetThuc { get; set; }
 
-    public string? DieuKienApDung { get; set; }
+    public decimal? DieuKienApDung { get; set; }
+
+    public string? MoTa { get; set; }
 
     public virtual ICollection<DonHang> DonHangs { get; set; } = new List<DonHang>();
 }

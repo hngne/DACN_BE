@@ -35,6 +35,10 @@ namespace DACN_H_P.Service.Impl
             {
                 return (false, $"Đã có mã khuyến mãi này {request.MaKhuyenMai}", null);
             }
+            if(request.NgayBatDau > request.NgayKetThuc)
+            {
+                return (false, "Nhập sai về ngày khuyến mãi", null);
+            }
             var newKM = new KhuyenMai();
             newKM.MaKhuyenMai = request.MaKhuyenMai;
             newKM.TenKhuyenMai = request.TenKhuyenMai;
@@ -54,6 +58,10 @@ namespace DACN_H_P.Service.Impl
             if(exist == null)
             {
                 return (false, "Khuyến mãi không tồn tại", null);
+            }
+            if (request.NgayBatDau > request.NgayKetThuc)
+            {
+                return (false, "Nhập sai về ngày khuyến mãi", null);
             }
             exist.TenKhuyenMai = request.TenKhuyenMai;
             exist.NgayBatDau = request.NgayBatDau;

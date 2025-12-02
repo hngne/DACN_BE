@@ -13,6 +13,6 @@ namespace DACN_H_P.Repository
         Task<bool> CheckPTTT(string mapttt);
         Task<bool> CheckPTVC(string maptvc);
         Task<bool> CheckVoucher(string mavoucher);
-
+        Task<Voucher?> GetVoucherByMaVoucher(string mavoucher);
     }
 }
