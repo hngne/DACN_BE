@@ -54,6 +54,9 @@ namespace DACN_H_P
 
             builder.Services.AddScoped<ICuaHangRepository,CuaHangRepository>();
             builder.Services.AddScoped<ICuaHangService, CuaHangService>();
+            
+            builder.Services.AddScoped<IDanhGiaRepository, DanhGiaRepository>();
+            builder.Services.AddScoped<IDanhGiaService, DanhGiaService>();
 
             var app = builder.Build();
 

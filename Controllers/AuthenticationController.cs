@@ -38,9 +38,9 @@ namespace DACN_H_P.Controllers
             var result = await _service.DangKyAsync(request);
             if(!result.success)
             {
-                return BadRequest(result.message);
+                return BadRequest(APIResponse<string>.Fail(result.message));
             }
-            return Ok(result.message);
+            return Ok(APIResponse<string>.OK(result.message,null));
         }
     }
 }
