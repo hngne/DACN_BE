@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using DACN_H_P.Utils;
 using DACN_H_P.Dtos.Response;
 using DACN_H_P.Dtos.Request;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DACN_H_P.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GioHangController : ControllerBase
     {
         private readonly IGioHangService _service;

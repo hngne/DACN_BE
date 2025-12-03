@@ -2,6 +2,7 @@
 using DACN_H_P.Dtos.Response;
 using DACN_H_P.Service;
 using DACN_H_P.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace DACN_H_P.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DonHangController : ControllerBase
     {
         private readonly IDonHangService _service;
@@ -56,6 +58,7 @@ namespace DACN_H_P.Controllers
 
         [HttpPut]
         [Route("trangthai/{maDonHang}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> updatestatusasync(string maDonHang, [FromBody] UpdateTrangThaiDonRequest request)
         {
             var result = await _service.UpdateTrangThaiDonHang(maDonHang, request.TrangThaiMoi);
@@ -90,6 +93,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<DonHangResponse>.OK(result.Message, result.response));
         }
         [HttpDelete]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> deleteasync(string maDH)
         {
             var result = await _service.DeleteDonHang(maDH);

@@ -1,10 +1,11 @@
 ﻿using DACN_H_P.Dtos.Request;
+using DACN_H_P.Dtos.Response;
 using DACN_H_P.Service;
 using DACN_H_P.Utils;
+using DACN_H_P.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using DACN_H_P.Utils;
-using DACN_H_P.Dtos.Response;
 
 namespace DACN_H_P.Controllers
 {
@@ -36,6 +37,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<IEnumerable<AnhResponse>>.OK("Lấy ảnh theo mã sản phẩm thành công", result));
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> postasync([FromForm] AnhRequest request)
         {
            var result = await _service.PostAsync(request);
@@ -46,6 +48,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<IEnumerable<AnhResponse>>.OK(result.message, result.response));
         }
         [HttpDelete]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> deleteasync(string maanh)
         {
             var result = await _service.DeleteAsync(maanh);

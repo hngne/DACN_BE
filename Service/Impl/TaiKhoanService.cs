@@ -4,6 +4,11 @@ using DACN_H_P.Mapper;
 using DACN_H_P.Model;
 using DACN_H_P.Repository;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration; // Dùng để đọc appsettings
+using Microsoft.IdentityModel.Tokens;     // Dùng cho JWT
+using System.IdentityModel.Tokens.Jwt;    // Dùng cho JWT
+using System.Security.Claims;             // Dùng cho JWT
+using System.Text;                        // Dùng cho JWT
 
 namespace DACN_H_P.Service.Impl
 {
@@ -13,8 +18,12 @@ namespace DACN_H_P.Service.Impl
 
         private readonly PasswordHasher<TaiKhoan> _hasher = new();
 
-        public TaiKhoanService(ITaiKhoanRepository repo) {
-            _repo = repo; 
+        private readonly IConfiguration _config;
+
+        public TaiKhoanService(ITaiKhoanRepository repo, IConfiguration config)
+        {
+            _repo = repo;
+            _config = config;
         }
 
         public async Task<(bool, string)> DangKyAsync(DangKyRequest request)
@@ -42,6 +51,34 @@ namespace DACN_H_P.Service.Impl
             return (true, "Đăng ký thành công");
             
         }
+        private string GenerateToken(TaiKhoan user)
+        {
+            // 1. Tạo Key bảo mật từ chuỗi bí mật trong appsettings.json
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+
+            // 2. Tạo thuật toán ký (Signature)
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            // 3. Tạo các Claim (Thông tin nhét vào trong Token)
+            var claims = new[]
+            {
+                new Claim("MaTaiKhoan", user.MaTaiKhoan),
+                new Claim(ClaimTypes.Name, user.TenDangNhap),
+                new Claim(ClaimTypes.Role, user.VaiTro ?? "user"), // Quan trọng để phân quyền
+                new Claim("HoTen", user.HoTen ?? "")
+            };
+
+            // 4. Cấu hình Token (Ai phát hành, Hết hạn khi nào...)
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(2), // Token sống 2 tiếng
+                signingCredentials: credentials);
+
+            // 5. Viết Token ra chuỗi string
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
         public async Task<(bool, string, DangNhapResponse)> DangNhapAsync(DangNhapRequest request)
         {
             var exist = await _repo.GetByTenDangNhapAsync(request.TenDangNhap);
@@ -54,12 +91,14 @@ namespace DACN_H_P.Service.Impl
             {
                 return (false, "Tên đăng nhập hoặc mật khẩu không chính xác", null);
             }
+            var tokenString = GenerateToken(exist);
             return (true,"Dăng nhập thành công",new DangNhapResponse
             {
                 MaTaiKhoan = exist.MaTaiKhoan,
                 TenDangNhap = exist.TenDangNhap,
                 Email = exist.Email,
                 VaiTro = exist.VaiTro,
+                Token = tokenString,
             });
         }
         public async Task<IEnumerable<TaiKhoanResponse>> GetAllTaiKhoan()

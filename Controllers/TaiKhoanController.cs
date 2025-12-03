@@ -2,6 +2,7 @@
 using DACN_H_P.Dtos.Response;
 using DACN_H_P.Service;
 using DACN_H_P.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,13 +13,13 @@ namespace DACN_H_P.Controllers
     public class TaiKhoanController : ControllerBase
     {
         private readonly ITaiKhoanService _service;
-
         public TaiKhoanController(ITaiKhoanService service)
         {
             _service = service;
         }
 
         [HttpGet("admin/all")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> getallasync()
         {
             var data = await _service.GetAllTaiKhoan();
@@ -26,6 +27,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> getbymatkasync(string id)
         {
             var data = await _service.GetTaiKhoanById(id);
@@ -57,6 +59,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpPut("admin/role/{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateRole(string id, [FromBody] UpdateRoleRequest req)
         {
             var result = await _service.UpdateRole(id, req.VaiTroMoi);
@@ -67,6 +70,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpDelete("admin/{id}")]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> Delete(string id)
         {
             var result = await _service.DeleteTaiKhoan(id);

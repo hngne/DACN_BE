@@ -2,6 +2,7 @@
 using DACN_H_P.Dtos.Response;
 using DACN_H_P.Service;
 using DACN_H_P.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create(VoucherRequest request)
         {
             var result = await _service.CreateVoucher(request);
@@ -48,6 +50,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Update(VoucherRequest request)
         {
             var result = await _service.UpdateVoucher(request);
@@ -59,6 +62,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(string maVoucher)
         {
             var result = await _service.DeleteVoucher(maVoucher);

@@ -1,9 +1,10 @@
-﻿using DACN_H_P.Service;
+﻿using DACN_H_P.Dtos.Request;
+using DACN_H_P.Dtos.Response;
+using DACN_H_P.Service;
+using DACN_H_P.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using DACN_H_P.Utils;
-using DACN_H_P.Dtos.Response;
-using DACN_H_P.Dtos.Request;
 
 namespace DACN_H_P.Controllers
 {
@@ -56,6 +57,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<IEnumerable<SanPhamResponse>>.OK("Danh sách sản phẩm", data));
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PostAsync([FromForm] SanPhamRequest request)
         {
             var data = await _service.PostAsync(request);
@@ -66,6 +68,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<SanPhamResponse>.OK(data.message, data.response));
         }
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutAsync([FromForm] SanPhamRequest request)
         {
             var data = await _service.PutAsync(request);
@@ -76,6 +79,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<SanPhamResponse>.OK(data.message, data.response));
         }
         [HttpDelete]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteAsync(string masp)
         {
             var data = await _service.DeleteAsync(masp);

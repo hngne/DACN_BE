@@ -7,5 +7,6 @@
         public string TenDangNhap { get; set; } = null!;
         public string? Email { get; set; }
         public string? VaiTro { get; set; }
+        public string? Token { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using DACN_H_P.Dtos.Response;
 using DACN_H_P.Service;
 using DACN_H_P.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize]
         public async Task<IActionResult> Create([FromBody] TaoDanhGiaRequest request)
         {
             var result = await _service.TaoDanhGia(request);
@@ -31,6 +33,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] SuaDanhGiaRequest request)
         {
             var result = await _service.SuaDanhGia(request);
@@ -54,6 +57,7 @@ namespace DACN_H_P.Controllers
         // --- ADMIN ROUTES ---
 
         [HttpGet("admin/list")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AdminGetList()
         {
             var data = await _service.AdminGetAll();
@@ -61,6 +65,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpPut("admin/approve/{maDanhGia}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AdminApprove(string maDanhGia, [FromBody] DuyetDanhGiaRequest request)
         {
             var result = await _service.DuyetDanhGia(maDanhGia, request.TrangThai);
@@ -72,6 +77,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpDelete("admin/delete/{maDanhGia}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AdminDelete(string maDanhGia)
         {
             var result = await _service.XoaDanhGia(maDanhGia);

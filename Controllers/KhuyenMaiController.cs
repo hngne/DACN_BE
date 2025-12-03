@@ -2,6 +2,7 @@
 using DACN_H_P.Dtos.Response;
 using DACN_H_P.Service;
 using DACN_H_P.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,6 +35,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<KhuyenMaiResponse>.OK("Đã tìm thấy khuyến mãi", data));
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> postkmasync(KhuyenMaiRequest request)
         {
             var data = await _service.PostKM(request);
@@ -46,6 +48,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<KhuyenMaiResponse>.OK(data.message, data.response));
         }
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> putkmasync(KhuyenMaiRequest request)
         {
             var data = await _service.UpdateKM(request);
@@ -59,6 +62,7 @@ namespace DACN_H_P.Controllers
         }
         [HttpDelete]
         [Route("{makm}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> deletekmasync(string makm)
         {
             var data = await _service.DeleteKM(makm);
@@ -92,6 +96,7 @@ namespace DACN_H_P.Controllers
         }
         [HttpPost]
         [Route("chitiet")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> postchitietasync(ChiTietKhuyenMaiRequest request)
         {
             var data = await _service.PostChiTietKM(request);
@@ -105,6 +110,7 @@ namespace DACN_H_P.Controllers
         }
         [HttpPut]
         [Route("chitiet")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> putchitietasync(ChiTietKhuyenMaiRequest request)
         {
             var (success, message, response) = await _service.UpdateChiTietKM(request);
@@ -118,6 +124,7 @@ namespace DACN_H_P.Controllers
         }
         [HttpDelete]
         [Route("chitiet/{makm}/{masp}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> deletechitietasync(string makm, string masp)
         {
             var data = await _service.DeleteChiTietKM(makm, masp);

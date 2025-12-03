@@ -1,10 +1,11 @@
-﻿using DACN_H_P.Repository.Impl;
+﻿using DACN_H_P.Dtos.Request;
+using DACN_H_P.Dtos.Response;
+using DACN_H_P.Repository.Impl;
 using DACN_H_P.Service;
+using DACN_H_P.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using DACN_H_P.Utils;
-using DACN_H_P.Dtos.Response;
-using DACN_H_P.Dtos.Request;
 
 namespace DACN_H_P.Controllers
 {
@@ -49,6 +50,7 @@ namespace DACN_H_P.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> postasync(DanhMucRequest request)
         {
             var data = await _service.PostAsync(request);
@@ -59,6 +61,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<DanhMucResponse>.OK(data.message, data.response));
         }
         [HttpPut]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> editasync(DanhMucRequest request)
         {
             var data = await _service.EditAsync(request);
@@ -69,6 +72,7 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<DanhMucResponse>.OK(data.message, data.response));
         }
         [HttpDelete]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> deleteasync(string madm)
         {
             var data = await _service.DeleteAsync(madm);

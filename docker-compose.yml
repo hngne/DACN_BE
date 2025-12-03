@@ -1,0 +1,29 @@
+﻿version: '3.4'
+
+services:
+  # 1. SQL Server
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql_server_container
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password123@
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./db_DACN_Final.sql:/tmp/db_DACN_Final.sql
+
+  # 2. Backend
+  backend:
+    image: dacn_backend
+    container_name: dacn_backend_container
+    build:
+      context: .              # Context là thư mục hiện tại
+      dockerfile: Dockerfile  # File Dockerfile nằm ngay đây
+    ports:
+      - "7000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=DACN_H;User Id=sa;Password=Password123@;TrustServerCertificate=True;
+    depends_on:
+      - db
