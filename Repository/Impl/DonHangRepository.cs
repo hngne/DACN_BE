@@ -52,6 +52,16 @@ namespace DACN_H_P.Repository.Impl
                 .Where(ct => ct.MaDonHang == maDH)
                 .ToListAsync();
         }
+        public async Task<bool> UpdateDonHang(DonHang donHang)
+        {
+            try
+            {
+                _context.DonHangs.Update(donHang);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch { return false; }
+        }
         public async Task<bool> CheckAcc(string matk)
         {
             return await _context.TaiKhoans.AnyAsync(tk => tk.MaTaiKhoan == matk);

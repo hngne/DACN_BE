@@ -146,6 +146,7 @@ namespace DACN_H_P.Repository.Impl
             if (gioHang != null)
             {
                 _context.ChiTietGhs.RemoveRange(gioHang.ChiTietGhs);
+                await _context.SaveChangesAsync();
             }
             return true;
         }
