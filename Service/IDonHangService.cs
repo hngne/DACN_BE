@@ -11,5 +11,6 @@ namespace DACN_H_P.Service
         Task<(bool Success, string Message, DonHangResponse? response)> UpdateTrangThaiDonHang(string maDonHang, string trangThaiMoi);
         Task<(bool Success, string Message, DonHangResponse? response)> HuyDonHang(string maDonHang, string maTaiKhoan);
         Task<(bool Success, string Message, DonHangResponse? response)> UpdateDiaChiGiaoHang(string maDonHang, string maTaiKhoan, string diaChiMoi);
+        Task<(bool Success, string Message)> DeleteDonHang(string maDH);
     }
 }

@@ -52,6 +52,9 @@ namespace DACN_H_P
             builder.Services.AddScoped<IDonHangRepositoy, DonHangRepository>();
             builder.Services.AddScoped<IDonHangService, DonHangService>();
 
+            builder.Services.AddScoped<ICuaHangRepository,CuaHangRepository>();
+            builder.Services.AddScoped<ICuaHangService, CuaHangService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

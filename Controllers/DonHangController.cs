@@ -42,7 +42,6 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<DonHangResponse>.OK("Tìm thấy đơn hàng", data));
         }
 
-        // 3. LẤY LỊCH SỬ ĐƠN HÀNG (Theo User)
         [HttpGet]
         [Route("user/{maTk}")]
         public async Task<IActionResult> getbymatkasync(string maTk)
@@ -55,11 +54,9 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<IEnumerable<DonHangResponse>>.OK("Lấy lịch sử đơn hàng thành công", data));
         }
 
-        // 4. ADMIN: CẬP NHẬT TRẠNG THÁI
-        // URL: PUT /api/DonHang/status/{maDonHang}
         [HttpPut]
         [Route("trangthai/{maDonHang}")]
-        public async Task<IActionResult> UpdateStatus(string maDonHang, [FromBody] UpdateTrangThaiDonRequest request)
+        public async Task<IActionResult> updatestatusasync(string maDonHang, [FromBody] UpdateTrangThaiDonRequest request)
         {
             var result = await _service.UpdateTrangThaiDonHang(maDonHang, request.TrangThaiMoi);
             if (!result.Success)
@@ -69,11 +66,9 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<DonHangResponse>.OK(result.Message, result.response));
         }
 
-        // 5. USER: HỦY ĐƠN HÀNG
-        // URL: PUT /api/DonHang/cancel/{maDonHang}
         [HttpPut]
         [Route("huydon/{maDonHang}")]
-        public async Task<IActionResult> CancelOrder(string maDonHang, [FromBody] HuyDonRequest request)
+        public async Task<IActionResult> canceldonhangasync(string maDonHang, [FromBody] HuyDonRequest request)
         {
             var result = await _service.HuyDonHang(maDonHang, request.MaTaiKhoan);
             if (!result.Success)
@@ -83,10 +78,9 @@ namespace DACN_H_P.Controllers
             return Ok(APIResponse<DonHangResponse>.OK(result.Message, new DonHangResponse()));
         }
 
-        // 6. USER: ĐỔI ĐỊA CHỈ GIAO HÀNG
-        // URL: PUT /api/DonHang/address/{maDonHang}
-        [HttpPut("address/{maDonHang}")]
-        public async Task<IActionResult> UpdateAddress(string maDonHang, [FromBody] UpdateDiaChiRequest request)
+        [HttpPut]
+        [Route("diachi/{maDonHang}")]
+        public async Task<IActionResult> updatediachiasync(string maDonHang, [FromBody] UpdateDiaChiRequest request)
         {
             var result = await _service.UpdateDiaChiGiaoHang(maDonHang, request.MaTaiKhoan, request.DiaChiMoi);
             if (!result.Success)
@@ -94,6 +88,16 @@ namespace DACN_H_P.Controllers
                 return BadRequest(APIResponse<DonHangResponse>.Fail(result.Message));
             }
             return Ok(APIResponse<DonHangResponse>.OK(result.Message, result.response));
+        }
+        [HttpDelete]
+        public async Task<IActionResult> deleteasync(string maDH)
+        {
+            var result = await _service.DeleteDonHang(maDH);
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+            return Ok(result.Message);
         }
     }
 }

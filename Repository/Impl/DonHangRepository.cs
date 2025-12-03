@@ -1,5 +1,7 @@
 ﻿using DACN_H_P.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using DACN_H_P.Utils;
 
 namespace DACN_H_P.Repository.Impl
 {
@@ -61,6 +63,31 @@ namespace DACN_H_P.Repository.Impl
                 return true;
             }
             catch { return false; }
+        }
+
+        public async Task<bool> DeleteDonHang(string maDH)
+        {
+            try
+            {
+                var donHang = await _context.DonHangs.FirstOrDefaultAsync(dh => dh.MaDonHang == maDH);
+                if(donHang == null)
+                {
+                    return false;
+                }
+
+                if (donHang.ChiTietDhs != null && donHang.ChiTietDhs.Any())
+                {
+                    _context.ChiTietDhs.RemoveRange(donHang.ChiTietDhs);
+                }
+
+                _context.DonHangs.Remove(donHang);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
         public async Task<bool> CheckAcc(string matk)
         {

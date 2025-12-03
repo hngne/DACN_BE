@@ -121,6 +121,25 @@ namespace DACN_H_P.Service.Impl
             var result = await _repo.GetDonHangByMaTK(maTK);
             return result.Select(DonHangBuilder.ToResponse).ToList();
         }
+
+        public async Task<(bool, string)> DeleteDonHang(string maDH)
+        {
+            var dh = await _repo.GetDonHangByMaDH(maDH);
+            if(dh == null)
+            {
+                return (false, "Không có đơn hàng này");
+            }
+            if(dh.TrangThaiDonHang == TrangThaiDonHang.GiaoHangThanhCong || dh.TrangThaiDonHang == TrangThaiDonHang.ChoXacNhan || dh.TrangThaiDonHang == TrangThaiDonHang.DangVanChuyen)
+            {
+                return (false, "Không được xóa đơn hàng này do nghiệp vụ không cho phép");
+            }
+            var result = await _repo.DeleteDonHang(maDH);
+            if (!result)
+            {
+                return (false, "Có lỗi khi xóa");
+            }
+            return (true, "Xóa thành công đơn hàng");
+        }
         public async Task<(bool, string, DonHangResponse?)> UpdateTrangThaiDonHang(string maDonHang, string trangThaiMoi)
         {
             var donHang = await _repo.GetDonHangByMaDH(maDonHang);
